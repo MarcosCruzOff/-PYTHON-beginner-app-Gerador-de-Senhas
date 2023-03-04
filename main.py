@@ -1,58 +1,90 @@
+from tkinter import *
+from tkinter import messagebox
 import random
-import tkinter as tk
+import pyperclip
 
-# Define a janela principal
-root = tk.Tk()
-root.title("Gerador de Senhas")
+# Criar a app principal
+app = Tk()
+app.title("Gerador de Senhas")
+app.geometry("380x380")
+app.resizable(False, False)
+app.config(bg="#212121")
 
-# Define a variável de controle para a barra de força
-strength_var = tk.StringVar()
+# inicializa a variável que representa o estado do botão
+botao_bloqueado = True
 
-# Define as opções de força
-STRENGTHS = ["Fracas", "Médias", "Fortes"]
 
-# Define a função para gerar senhas
-def generate_password():
-    # Define as opções de caracteres para a senha
-    lower = "abcdefghijklmnopqrstuvwxyz"
-    upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    numbers = "0123456789"
-    symbols = "!@#$%^&*()_+-=[]{};:,.<>/?"
-    all_chars = lower + upper + numbers + symbols
-    
-    # Define o tamanho da senha
-    length = 12
-    
-    # Gera a senha aleatória
-    password = "".join(random.sample(all_chars, length))
-    
-    # Atualiza a barra de força com base na senha gerada
-    if any(char.islower() for char in password) and any(char.isupper() for char in password) and any(char.isdigit() for char in password) and any(char in symbols for char in password):
-        strength_var.set(STRENGTHS[2])
-    elif (any(char.islower() for char in password) and any(char.isupper() for char in password) and any(char.isdigit() for char in password)) or (any(char.islower() for char in password) and any(char.isupper() for char in password) and any(char in symbols for char in password)) or (any(char.islower() for char in password) and any(char.isdigit() for char in password) and any(char in symbols for char in password)) or (any(char.isupper() for char in password) and any(char.isdigit() for char in password) and any(char in symbols for char in password)):
-        strength_var.set(STRENGTHS[1])
+
+# Variável para armazenar a opção selecionada
+opcao = IntVar()
+
+# Caixa de seleção de força da senha
+fraca_radio = Radiobutton(app, text="Fraca", bg="#121212", font=("jetBrainz Mono", 12, "bold"), variable=opcao, value=1, fg="red")
+fraca_radio.place(x=50,y=15)
+
+media_radio = Radiobutton(app, text="Média", bg="#121212", font=("jetBrainz Mono", 12, "bold"), variable=opcao, value=2, fg="orange")
+media_radio.place(x=150,y=15)
+
+forte_radio = Radiobutton(app, text="Forte", bg="#121212", font=("jetBrainz Mono", 12, "bold"), variable=opcao, value=3, fg="green")
+forte_radio.place(x=250,y=15)
+
+# verifica se algum radio foi selecionado
+def radio_selecionado():
+    if opcao.get():
+        return True
     else:
-        strength_var.set(STRENGTHS[0])
+        return False
+
+# Função para gerar a senha
+def gerar_senha():
+    if radio_selecionado():
+        # desbloqueia o botão
+        botao_bloqueado = False
+        # executa a ação do botão
+        # ...
+    else:
+        # exibe uma mensagem de alerta
+        messagebox.showwarning("Aviso", "Escolha uma opção antes de pressionar o botão.")  
+        
+    # Caracteres possíveis na senha
+    caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%&*()_+-=[]{}|;:,.<>/?"
     
-    # Atualiza o campo de texto com a senha gerada
-    password_entry.delete(0, tk.END)
-    password_entry.insert(0, password)
+    # Tamanho da senha
+    if opcao.get() == 1:
+        tamanho = 8
+    elif opcao.get() == 2:
+        tamanho = 12
+    else:
+        tamanho = 16
+    
+    # Gerar a senha
+    senha = ""
+    for i in range(tamanho):
+        senha += random.choice(caracteres)
+    
+    # Exibir a senha na tela
+    senha_var.set(senha)
 
-# Define a barra de força
-strength_label = tk.Label(root, textvariable=strength_var)
-strength_label.pack()
+# Variável para armazenar a senha gerada
+senha_var = StringVar()
 
-# Define o campo de texto para a senha gerada
-password_entry = tk.Entry(root, width=20)
-password_entry.pack()
+# Rótulo para exibir a senha gerada
+senha_label = Label(app, textvariable=senha_var, font=("Courier", 14), width=30, height=2, relief="solid")
+senha_label.place(x=20, y=150)  
 
-# Define o botão para gerar senhas
-generate_button = tk.Button(root, text="Gerar senha", command=generate_password)
-generate_button.pack()
+        
+# Botão para gerar a senha
+gerar_botao = Button(app, text="Gerar Senha", bg="#121212", font=("jetBrainz Mono", 12, "bold"), fg="white",command=gerar_senha, width=20)
+gerar_botao.place(x=90, y=80)
 
-# Define o botão para copiar a senha gerada
-copy_button = tk.Button(root, text="Copiar", command=lambda: root.clipboard_append(password_entry.get()))
-copy_button.pack()
+# Função para copiar a senha para a área de transferência
+def copiar_senha():
+    pyperclip.copy(senha_var.get())
+    
+# Botão para copiar a senha
+copiar_botao = Button(app, text="Copiar Senha", bg="#121212", font=("jetBrainz Mono", 12, "bold"), fg="white", command=copiar_senha, width=20)
+copiar_botao.place(x=90 , y=250)  
 
-# Inicia o loop principal da janela
-root.mainloop()
+
+
+mainloop()
