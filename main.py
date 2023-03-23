@@ -3,6 +3,16 @@ from tkinter import messagebox
 import random
 import pyperclip
 
+#Cores
+mainbg = "#212121"
+secondbg = "#121212"
+green = "#4d943e"
+yellow = "#f8be54"
+red = "#fb1909"
+
+#Fonts
+txt = "jetBrains Mono"
+
 
 # verifica se algum radio foi selecionado
 def radio_selecionado():
@@ -49,7 +59,7 @@ app = Tk()
 app.title("Gerador de Senhas")
 app.geometry("380x380")
 app.resizable(False, False)
-app.config(bg="#212121")
+app.config(bg=mainbg)
 
 icon = PhotoImage(file="imagens/icon.png")
 app.iconphoto(True, icon)
@@ -58,13 +68,13 @@ app.iconphoto(True, icon)
 opcao = IntVar()
 
 # Caixa de seleção de força da senha
-fraca_radio = Radiobutton(app, text="Fraca", bg="#121212", font=("jetBrainz Mono", 12, "bold"), variable=opcao, value=1, fg="red")
+fraca_radio = Radiobutton(app, text="Fraca", bg=secondbg, font=(txt, 12, "bold"), variable=opcao, value=1, fg=red)
 fraca_radio.place(x=50,y=15)
 
-media_radio = Radiobutton(app, text="Média", bg="#121212", font=("jetBrainz Mono", 12, "bold"), variable=opcao, value=2, fg="orange")
+media_radio = Radiobutton(app, text="Média", bg=secondbg, font=(txt, 12, "bold"), variable=opcao, value=2, fg=yellow)
 media_radio.place(x=150,y=15)
 
-forte_radio = Radiobutton(app, text="Forte", bg="#121212", font=("jetBrainz Mono", 12, "bold"), variable=opcao, value=3, fg="green")
+forte_radio = Radiobutton(app, text="Forte", bg=secondbg, font=(txt, 12, "bold"), variable=opcao, value=3, fg=green)
 forte_radio.place(x=250,y=15)
     
 # Variável para armazenar a senha gerada
@@ -75,16 +85,16 @@ senha_label = Label(app, textvariable=senha_var, font=("Courier", 14), width=30,
 senha_label.place(x=20, y=150)
         
 # Botão para gerar a senha
-gerar_botao = Button(app, text="Gerar Senha", bg="#121212", font=("jetBrainz Mono", 12, "bold"), fg="white",command=gerar_senha, width=20)
+gerar_botao = Button(app, text="Gerar Senha", bg=secondbg, font=(txt, 12, "bold"), fg="white",command=gerar_senha, width=20)
 gerar_botao.place(x=90, y=80)
 
 
     
 # Botão para copiar a senha
-copiar_botao = Button(app, text="Copiar Senha", bg="#121212", font=("jetBrainz Mono", 12, "bold"), fg="white", command=copiar_senha, width=20)
+copiar_botao = Button(app, text="Copiar Senha", bg=secondbg, font=(txt, 12, "bold"), fg="white", command=copiar_senha, width=20)
 copiar_botao.place(x=90 , y=250)
 
-label = Label(width=50, height=4, text='', bg="#212121", fg="white", font=('jetBrains Mono', 8), justify="center")
+label = Label(width=50, height=4, text='', bg=mainbg, fg="white", font=(txt, 8), justify="center")
 label.place(x=10 , y=300)
 
 mainloop()
